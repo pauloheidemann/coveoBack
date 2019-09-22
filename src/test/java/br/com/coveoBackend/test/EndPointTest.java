@@ -15,10 +15,18 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import br.com.coveoBackend.CoveoApplication;
 
+/**
+ * 
+ * Class to test the endpoint of the application
+ * @author Paulo Henrique Heidemann
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CoveoApplication.class, webEnvironment = WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 public class EndPointTest {
+	
+	private static final String TEST_QUERY = "test";
 	
 	@Autowired
 	private MockMvc mvc;
@@ -27,9 +35,22 @@ public class EndPointTest {
 	public void postQuery() {
 		try {
 			mvc.perform(
-					MockMvcRequestBuilders.post("/v1/coveo")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content("data"))
+				MockMvcRequestBuilders.post("/v1/coveo")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TEST_QUERY))
+			.andExpect(MockMvcResultMatchers.status().isOk());
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void getQuery() {
+		try {
+			mvc.perform(
+				MockMvcRequestBuilders.get("/v1/coveo/" + TEST_QUERY)
+				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(MockMvcResultMatchers.status().isOk());
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -12,9 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 @EntityScan(basePackages = "br.com.coveoBackend")
 public class CoveoApplication extends SpringBootServletInitializer{
 	
-	//TOKEN used in the search queries to Coveo API
-	public static final String TOKEN = "058c85fd-3c79-42a3-9236-b83d35588103";
-
 	public static void main(String[] args) {
 		SpringApplication.run(CoveoApplication.class, args);
 	}

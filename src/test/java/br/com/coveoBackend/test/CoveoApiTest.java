@@ -1,28 +1,37 @@
 package br.com.coveoBackend.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.coveoBackend.CoveoApplication;
+import br.com.coveoBackend.service.CoveoService;
+import br.com.coveoBackend.service.ICoveoService;
 
+/**
+ * Class to test the usage of the Coveo API
+ * @author Paulo Henrique Heidemann
+ *
+ */
 public class CoveoApiTest {
 	
-	public static String query = "https://cloudplatform.coveo.com/rest/search?access_token=" + CoveoApplication.TOKEN;
+	private ICoveoService service;
+	
+	@Before
+	public void init() {
+		service = new CoveoService();
+	}
 
 	@Test
-	public void queryWithoutParameters() {
+	public void queryWithoutParametersUsingGet() {
 		try {
-			RestTemplate template = new RestTemplate();
-			ResponseEntity<String> response = template.getForEntity(query, String.class);
-			assertEquals(response.getStatusCode(), HttpStatus.OK);
+			JsonNode result = service.getQuery("");
+			JsonNode totalCount = result.path("totalCount");
+			assertTrue("The count must be bigger than 0", totalCount.asInt() > 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
@@ -30,13 +39,22 @@ public class CoveoApiTest {
 	}
 	
 	@Test
-	public void searchByTitle() {
+	public void queryWithoutParametersUsingPost() {
 		try {
-			RestTemplate template = new RestTemplate();
-			ResponseEntity<String> response = template.getForEntity(query + "&q=@title=\"Brasserie Voirons Lug, Forte Rousse\"", String.class);
-			ObjectMapper mapper = new ObjectMapper();
-			JsonNode root = mapper.readTree(response.getBody());
-			JsonNode totalCount = root.path("totalCount");
+			JsonNode result = service.postQuery("");
+			JsonNode totalCount = result.path("totalCount");
+			assertTrue("The count must be bigger than 0", totalCount.asInt() > 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void searchByFieldUsingGet() {
+		try {
+			JsonNode result = service.getQuery("@title=\"Brasserie Voirons Lug, Forte Rousse\"");
+			JsonNode totalCount = result.path("totalCount");
 			assertEquals(totalCount.asInt(), 1);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -45,13 +63,10 @@ public class CoveoApiTest {
 	}
 	
 	@Test
-	public void searchByTitleUsingPost() {
+	public void searchByFieldUsingPost() {
 		try {
-			RestTemplate template = new RestTemplate();
-			ResponseEntity<String> response = template.postForEntity(query, "q=@title=\"Brasserie Voirons Lug, Forte Rousse\"" , String.class);
-			ObjectMapper mapper = new ObjectMapper();
-			JsonNode root = mapper.readTree(response.getBody());
-			JsonNode totalCount = root.path("totalCount");
+			JsonNode result = service.postQuery("@title=\"Brasserie Voirons Lug, Forte Rousse\"");
+			JsonNode totalCount = result.path("totalCount");
 			assertEquals(totalCount.asInt(), 1);
 		} catch (Exception e) {
 			e.printStackTrace();
