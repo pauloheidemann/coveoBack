@@ -13,22 +13,28 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import br.com.coveoBackend.CoveoApplication;
+
 @RunWith(SpringRunner.class)
-// @SpringBootTest(classes = WaesApplication.class, webEnvironment = WebEnvironment.MOCK)
+@SpringBootTest(classes = CoveoApplication.class, webEnvironment = WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 public class EndPointTest {
-
+	
 	@Autowired
 	private MockMvc mvc;
-
+	
 	@Test
-	public void save() {
+	public void postQuery() {
 		try {
-			mvc.perform(MockMvcRequestBuilders.post("/v1/diff/1/right").contentType(MediaType.APPLICATION_JSON)
-					.content("data")).andExpect(MockMvcResultMatchers.status().isOk());
+			mvc.perform(
+					MockMvcRequestBuilders.post("/v1/coveo")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("data"))
+			.andExpect(MockMvcResultMatchers.status().isOk());
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
 	}
+
 }
