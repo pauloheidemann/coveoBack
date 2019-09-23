@@ -1,0 +1,10 @@
+version: '3'
+services:
+  back:
+    image: "pauloheidemann/coveoback:latest"
+    ports:
+      - "8080:8080"
+  front:
+    image: "pauloheidemann/coveofront:latest"
+    ports:
+      - "8082:8080"
