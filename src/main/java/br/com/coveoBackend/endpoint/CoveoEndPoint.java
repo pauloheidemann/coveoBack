@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.coveoBackend.service.ICoveoService;
 
@@ -59,7 +60,9 @@ public class CoveoEndPoint {
 	ResponseEntity<String> executePostQuery(@RequestBody String data) {
 		try {
 			logger.info("Searching for " + data);
-			JsonNode result = service.postQuery(data);
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode filter = mapper.readTree(data);
+			JsonNode result = service.postQuery(filter.get("params").get("filter").asText());
 			logger.info("Results are: " + result);
 			return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
 		} catch (Exception e) {
