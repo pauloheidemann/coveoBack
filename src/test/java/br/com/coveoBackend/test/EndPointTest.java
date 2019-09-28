@@ -35,9 +35,8 @@ public class EndPointTest {
 	public void postQuery() {
 		try {
 			mvc.perform(
-				MockMvcRequestBuilders.post("/v1/coveo")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TEST_QUERY))
+				MockMvcRequestBuilders.post("/v1/coveo/all")
+				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(MockMvcResultMatchers.status().isOk());
 		} catch (Exception e) {
 			e.printStackTrace();

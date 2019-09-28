@@ -62,7 +62,7 @@ public class CoveoEndPoint {
 			logger.info("Searching for " + data);
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode filter = mapper.readTree(data);
-			JsonNode result = service.postQuery(filter.get("params").get("filter").asText());
+			JsonNode result = service.postQuery(filter.get("params").asText());
 			logger.info("Results are: " + result);
 			return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
 		} catch (Exception e) {
