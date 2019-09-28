@@ -17,7 +17,6 @@ You can run the project two ways:
 1. By running the docker-compose.yml in the project. To do that, navigate to the project folder and execute docker-compose up.
 If you are using windows you may have to turn off your firewall.
 To access the application, open a browser and access http://localhost:8082.
-
 The backend application will run on http://localhost:8080
 
 2. You can clone this project and deploy it to a wildfly server, but you'll have to clone the frontend project as well, which is located in the repository [here](https://github.com/pauloheidemann/coveofront).
