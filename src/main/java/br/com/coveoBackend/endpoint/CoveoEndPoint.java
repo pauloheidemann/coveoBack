@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import br.com.coveoBackend.service.CoveoService;
 import br.com.coveoBackend.service.ICoveoService;
 
 /**
@@ -78,6 +77,7 @@ public class CoveoEndPoint {
 		try {
 			logger.info("Searching for " + filter);
 			JsonNode result = service.getQuery(filter);
+			logger.info("Results are: " + result);
 			return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
